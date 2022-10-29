@@ -1,0 +1,34 @@
+.wrapper {padding: 0 15px;}
+.qcf-settings {width: 100%;}
+.qcf-options {float:left;border: 1px solid #005F6B;padding: 0 10px 10px 10px;margin: 10px 0 0 0;background:#FFF;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;width:46%;}
+.qcf-options table input[type=text], .qcf-options textarea, .qcf-options table select {margin: 2px 0 2px 0;padding: 2px;color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto;line-height:normal;}
+.qcf-options input[type=text] {color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto;line-height:normal;}
+.wp-picker-container input.wp-color-picker[type="text"] {width:5em;line-height:18px;margin:0 3px 0 0;padding:3px;0;}
+.qcf-options table {width:100%;}
+.qcf-options th {text-align:left;}
+.qcf-options td {vertical-align:top;}
+.qcf-options p {margin: 4px 0;padding: 0;}
+.qcf-options h2 {color: #005F6B;}
+.qcf-button  {background: #005F6B; color:#FFF; padding: 6px 12px;text-decoration: none; border: none;font-size:1em !important;cursor:pointer;}
+.qcf-button:hover  {background: #888;color:#FFF;}
+.qcf-options h3 {color: #717DD7;margin: 4px 0 0 0;padding: 0;}
+.qcf-options submit input:focus {color: #FFF;}
+.qcf-options ul {margin: 0;padding: 0;}
+@media screen and (max-width: 600px) {.qcf-options {width: 100%;}}
+#qcf_sort { list-style-type: none; margin: 0; padding: 0; width:100%; }
+#qcf_sort li { margin: 3px 0; padding: 0.3em 0.8em 0.3em 0.5em; min-height:1.6em; cursor:pointer; border:1px solid #888; clear:left}
+#qcf_sort li.button_active { background-color: white;}
+#qcf_sort li.button_inactive { background-color: #E0E0E0;}
+#qcf_sort li div {overflow:hidden;}
+
+#qcf-widget td {border-top: 1px solid #005F6B;padding: 5px 10px 5px 0;max-width: 400px;vertical-align:top;}
+#qcf-widget td b {color: #005F6B;}
+#qcf-widget th {padding: 5px 10px 5px 0;max-width: 400px;text-align: left;color: #005F6B;}
+#qcf-widget h2 a {background: #005F6B; color:#FFF; padding: 6px 12px;text-decoration: none;}
+
+.qpupgrade {width:100%; margin: 12px 0;}
+.qpupgrade h3 {margin:0;padding:0; color:#FFF;font-size:1em}
+.qpupgrade p {margin:12px 0 0 0;color:#FFF;}
+.qpupgrade a {display:block;text-align: center;width: 100%;background: #8951A5;padding: 12px 6px;color: #FFF;margin: 0;border:4px solid #999;border-radius: 12px;text-decoration:none;font-size:240%;line-height:1em;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.qpupgrade a:hover {color: #FFF;background: #343838;}
+.qpupgrade a span {font-size:50%;}
