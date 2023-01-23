@@ -338,7 +338,7 @@ function qcf_form_settings( $id )
         }
         foreach ( $active_buttons as $button ) {
             if ( isset( $_POST['label_' . $button] ) ) {
-                $qcf[$item] = wp_kses_post( stripslashes( $_POST['label_' . $button] ) );
+                $qcf['label_' . $button] = wp_kses_post( stripslashes( $_POST['label_' . $button] ) );
             }
         }
         update_option( 'qcf_settings' . $id, $qcf );

@@ -1,4 +1,4 @@
-# Copyright (C) 2022 quick-contact-form
+# Copyright (C) 2023 quick-contact-form
 # This file is distributed under the same license as the quick-contact-form package.
 msgid ""
 msgstr ""
