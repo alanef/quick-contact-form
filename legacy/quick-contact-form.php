@@ -1501,7 +1501,7 @@ function qcf_style_scripts()
     
     
     if ( !$qcf_form['noui'] ) {
-        $b = wp_enqueue_style( 'jquery-style', QUICK_CONTACT_FORM_PLUGIN_DIR . 'ui/user/css/jquery-ui-smoothness-1-11-2.css' );
+        $b = wp_enqueue_style( 'jquery-style', QUICK_CONTACT_FORM_PLUGIN_URL . 'ui/user/css/jquery-ui-smoothness-1-11-2.css' );
         $c = 1;
     }
 

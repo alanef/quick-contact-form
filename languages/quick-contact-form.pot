@@ -13,7 +13,7 @@ msgstr ""
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/quick-contact-form.php:83
+#: src/quick-contact-form.php:84
 msgid "Cannot execute as the plugin already exists, if you have a free version installed deactivate that and try again"
 msgstr ""
 
