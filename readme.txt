@@ -2,7 +2,7 @@
 Contributors: Fullworks
 Tags: contact form, form
 Tested up to: 6.1
-Stable tag: 8.0.3.1
+Stable tag: 8.0.4
 Type: freemium
 
 An easy to set up, plug and play contact form with a huge range of options and styles. A beginner friendly WordPress contact form plugin.
@@ -96,15 +96,12 @@ I did, and so have you.  Maybe there will be more, who knows.
 
 
 == Changelog ==
-= 8.0.3.1 =
-* fix issue with slider step setting
+= 8.0.4 =
+* Added some extra nonces and sanitizations
 
 = 8.0.3 =
 * add filters so default markup can be overridden
 * made checking and sending header follow the style option
 * enabled  the consent field to be a required field
 
-
-
-
-[Full Previous Change History](https://plugins.trac.wordpress.org/browser/quick-contact-form/trunk/changelog.txt)
+[Full Change History](https://plugins.trac.wordpress.org/browser/quick-contact-form/trunk/changelog.txt)

@@ -79,7 +79,7 @@ class Admin {
         $notice='';
 		// Output notice HTML.
 		if ( ! empty( $notice ) ) {
-			printf( '<div id="message" class="notice notice-warning" style="overflow:hidden;font-size: 150%;"><p>%1$s</p></div>', $notice );
+			printf( '<div id="message" class="notice notice-warning" style="overflow:hidden;font-size: 150%;"><p>%1$s</p></div>', wp_kses_post($notice) );
 		}
 
 	}

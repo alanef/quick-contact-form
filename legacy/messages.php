@@ -4,11 +4,13 @@ $qcf_setup = qcf_get_stored_setup();
 $tabs = explode( ",", $qcf_setup['alternative'] );
 $firsttab = reset( $tabs );
 echo  '<div class="wrap">' ;
-echo  '<h1>Quick Contact Form Messages</h1>' ;
+echo  '<h1>' . esc_html__( 'Quick Contact Form Messages', 'quick-contact-form' ) . '</h1>' ;
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
 
 if ( isset( $_GET['tab'] ) ) {
-    qcf_messages_admin_tabs( $_GET['tab'] );
-    $tab = $_GET['tab'];
+    // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
+    $tab = sanitize_text_field( $_GET['tab'] );
+    qcf_messages_admin_tabs( $tab );
 } else {
     qcf_messages_admin_tabs( $firsttab );
     $tab = $firsttab;
@@ -80,12 +82,11 @@ function qcf_messages_admin_tabs( $current = 'default' )
     $qcf_setup = qcf_get_stored_setup();
     $tabs = explode( ",", $qcf_setup['alternative'] );
     array_push( $tabs, 'default' );
-    $message = get_option( 'qcf_message' );
     echo  '<h2 class="nav-tab-wrapper">' ;
     foreach ( $tabs as $tab ) {
         $class = ( $tab == $current ? ' nav-tab-active' : '' );
         if ( $tab ) {
-            echo  "<a class='nav-tab{$class}' href='?page=quick-contact-form-messages&tab=" . $tab . "'>{$tab}</a>" ;
+            echo  '<a class="nav-tab' . $class . '" href="?page=quick-contact-form-messages&tab=' . esc_attr( $tab ) . '">' . wp_kses_post( $tab ) . '</a>' ;
         }
     }
     echo  '</h2>' ;
@@ -95,7 +96,7 @@ function qcf_show_messages( $id )
 {
     global  $current_user ;
     global  $quick_contact_form_fs ;
-    get_currentuserinfo();
+    $sendtoemail = false;
     if ( $id == 'default' ) {
         $id = '';
     }
@@ -109,7 +110,9 @@ function qcf_show_messages( $id )
     qcf_generate_csv();
     
     if ( isset( $_POST['qcf_emaillist'] ) ) {
-        $message = get_option( 'qcf_messages' . $id );
+        if ( !isset( $_POST['_qcf_messages_download_nonce'] ) || !wp_verify_nonce( $_POST['_qcf_messages_download_nonce'], 'qcf_messages_download' ) ) {
+            wp_die( esc_html__( 'Nonce validation - security failed', 'quick-contact-form' ) );
+        }
         $messageoptions = qcf_get_stored_msg();
         $content = qcf_build_message_table(
             $id,
@@ -123,7 +126,7 @@ function qcf_show_messages( $id )
         }
         $title = 'Message List for ' . $title . ' as at ' . date( 'j M Y' );
         $current_user = wp_get_current_user();
-        $sendtoemail = $_POST['sendtoemail'];
+        $sendtoemail = sanitize_email( $_POST['sendtoemail'] );
         $headers = "From: <" . $sendtoemail . ">\r\n" . "MIME-Version: 1.0\r\n" . "Content-Type: text/html; charset=\"utf-8\"\r\n";
         wp_mail(
             $sendtoemail,
@@ -134,24 +137,32 @@ function qcf_show_messages( $id )
         qcf_admin_notice( 'Message list has been sent to ' . $sendtoemail . '.' );
     }
     
+    
     if ( isset( $_POST['qcf_reset_message' . $id] ) ) {
+        if ( !isset( $_POST['_qcf_messages_download_nonce'] ) || !wp_verify_nonce( $_POST['_qcf_messages_download_nonce'], 'qcf_messages_download' ) ) {
+            wp_die( esc_html__( 'Nonce validation - security failed', 'quick-contact-form' ) );
+        }
         delete_option( 'qcf_messages' . $id );
     }
     
+    
     if ( isset( $_POST['qcf_email_selected'] ) ) {
-        $id = $_POST['formname'];
+        if ( !isset( $_POST['_qcf_messages_download_nonce'] ) || !wp_verify_nonce( $_POST['_qcf_messages_download_nonce'], 'qcf_messages_download' ) ) {
+            wp_die( esc_html__( 'Nonce validation - security failed', 'quick-contact-form' ) );
+        }
+        $id = sanitize_text_field( $_POST['formname'] );
         $from = get_bloginfo( 'name' );
         $current_user = wp_get_current_user();
         $sendtoemail = $current_user->user_email;
         $headers = 'From: "' . $from . '" <' . $sendtoemail . '>' . "\r\n" . "MIME-Version: 1.0\r\n" . "Content-Type: text/html; charset=\"utf-8\"\r\n";
-        $body = $_POST['message'];
-        $message = get_option( 'qcf_messages' . $id );
+        $body = wp_kses_post( $_POST['message'] );
+        $message = get_option( 'qcf_messages' . $id, array() );
         $count = count( $message );
         for ( $i = 0 ;  $i <= $count ;  $i++ ) {
             if ( $_POST[$i] == 'checked' ) {
                 wp_mail(
                     $message[$i]['field2'],
-                    $_POST['subject'],
+                    sanitize_text_field( $_POST['subject'] ),
                     $body,
                     $headers
                 );
@@ -162,8 +173,11 @@ function qcf_show_messages( $id )
     
     
     if ( isset( $_POST['qcf_delete_selected'] ) ) {
-        $id = $_POST['formname'];
-        $message = get_option( 'qcf_messages' . $id );
+        if ( !isset( $_POST['_qcf_messages_download_nonce'] ) || !wp_verify_nonce( $_POST['_qcf_messages_download_nonce'], 'qcf_messages_download' ) ) {
+            wp_die( esc_html__( 'Nonce validation - security failed', 'quick-contact-form' ) );
+        }
+        $id = sanitize_text_field( $_POST['formname'] );
+        $message = get_option( 'qcf_messages' . $id, array() );
         $count = count( $message );
         for ( $i = 0 ;  $i <= $count ;  $i++ ) {
             if ( $_POST[$i] == 'checked' ) {
@@ -172,17 +186,20 @@ function qcf_show_messages( $id )
         }
         $message = array_values( $message );
         update_option( 'qcf_messages' . $id, $message );
-        qcf_admin_notice( __( 'Selected messages have been deleted.', 'quick-contact-form' ) );
+        qcf_admin_notice( esc_html__( 'Selected messages have been deleted.', 'quick-contact-form' ) );
     }
     
     
     if ( isset( $_POST['Update'] ) ) {
+        if ( !isset( $_POST['_qcf_messages_update'] ) || !wp_verify_nonce( $_POST['_qcf_messages_update'], 'qcf_messages_update' ) ) {
+            wp_die( esc_html__( 'Nonce validation - security failed', 'quick-contact-form' ) );
+        }
         $options = array( 'messageqty', 'messageorder' );
         foreach ( $options as $item ) {
-            $messageoptions[$item] = stripslashes( $_POST[$item] );
+            $messageoptions[$item] = stripslashes( sanitize_text_field( $_POST[$item] ) );
         }
         update_option( 'qcf_messageoptions', $messageoptions );
-        qcf_admin_notice( __( "The message options have been updated.", 'quick-contact-form' ) );
+        qcf_admin_notice( esc_html__( "The message options have been updated.", 'quick-contact-form' ) );
     }
     
     if ( !$sendtoemail ) {
@@ -194,16 +211,16 @@ function qcf_show_messages( $id )
         
         if ( $quick_contact_form_fs->is_trial() || $quick_contact_form_fs->is_trial_utilized() ) {
             $upurl = $quick_contact_form_fs->get_upgrade_url();
-            $upmsg = __( 'Upgrade to Pro', 'quick-contact-form' );
+            $upmsg = esc_html__( 'Upgrade to Pro', 'quick-contact-form' );
         } else {
             $upurl = $quick_contact_form_fs->get_trial_url();
-            $upmsg = __( 'Go Pro: Free 14 Day Trial', 'quick-contact-form' );
+            $upmsg = esc_html__( 'Go Pro: Free 14 Day Trial', 'quick-contact-form' );
         }
         
         $new = '<div class="qpupgrade"><a href="' . $upurl . '">
     <h3>' . $upmsg . '</h3>
-    <p>' . __( 'Upgrading lets you create a mailing list, send emails from your dashboard and access all form attachments.', 'quick-contact-form' ) . '</p>
-    <p>' . __( 'Click here to find out more', 'quick-contact-form' ) . '</p>
+    <p>' . esc_html__( 'Upgrading lets you create a mailing list, send emails from your dashboard and access all form attachments.', 'quick-contact-form' ) . '</p>
+    <p>' . esc_html__( 'Click here to find out more', 'quick-contact-form' ) . '</p>
     </a></div>';
     }
     
@@ -216,7 +233,12 @@ function qcf_show_messages( $id )
         $showthismany = '100';
     }
     ${$messageoptions['messageorder']} = "checked";
-    $dashboard = '<form method="post" action="">
+    $dashboard = '<form method="post" action="">' . wp_nonce_field(
+        'qcf_messages_update',
+        '_qcf_messages_update_nonce',
+        true,
+        false
+    ) . '
 	<p><b>Show</b> <input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="fifty" ' . $fifty . ' /> 50 
 	<input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="hundred" ' . checked( $messageoptions['messageqty'], 'hundred', false ) . ' /> 100 
 	<input style="margin:0; padding:0; border:none;" type="radio" name="messageqty" value="all" ' . checked( $messageoptions['messageqty'], 'all', false ) . ' /> all messages.&nbsp;&nbsp;
@@ -224,7 +246,12 @@ function qcf_show_messages( $id )
 	<input style="margin:0; padding:0; border:none;" type="radio" name="messageorder" value="newest" ' . checked( $messageoptions['messageorder'], 'newest', false ) . ' /> newest first
 	&nbsp;&nbsp;<input type="submit" name="Update" class="button-secondary" value="Update options" />
 	</form></p>';
-    $dashboard .= '<div class="wrap"><div id="qcf-widget"><form method="post" id="download_form" action="">
+    $dashboard .= '<div class="wrap"><div id="qcf-widget"><form method="post" id="download_form" action="">' . wp_nonce_field(
+        'qcf_messages_download',
+        '_qcf_messages_download_nonce',
+        true,
+        false
+    ) . '
     <p>Send list to this email address: <input type="text" name="sendtoemail" value="' . $sendtoemail . '">&nbsp;
     <input type="submit" name="qcf_emaillist" class="qcf-button" value="Email List" />
     <input type="submit" name="qcf_reset_message' . $id . '" class="qcf-button" value="Delete Messages" onclick="return window.confirm( \'Are you sure you want to delete the messages for ' . $title . '?\' );"/>
@@ -256,11 +283,12 @@ function qcf_build_message_table(
 )
 {
     global  $quick_contact_form_fs ;
-    $message = get_option( 'qcf_messages' . $id );
+    $message = get_option( 'qcf_messages' . $id, array() );
     $attach = qcf_get_stored_attach( $id );
     $count = 0;
     $content = '';
-    $qcf['label']['field15'] = __( "Consent", 'quick-contact-form' );
+    $report = '';
+    $qcf['label']['field15'] = esc_html__( "Consent", 'quick-contact-form' );
     if ( !is_array( $message ) ) {
         $message = array();
     }

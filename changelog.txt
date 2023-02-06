@@ -1,3 +1,11 @@
+= 8.0.4 =
+* Added some extra nonces and sanitizations
+
+= 8.0.3 =
+* add filters so default markup can be overridden
+* made checking and sending header follow the style option
+* enabled  the consent field to be a required field
+
 = 8.0.2 =
 * security fix
 

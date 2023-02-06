@@ -5,13 +5,13 @@
 .qcf-style #rounded {border: 1px solid #415063;padding: 10px;-moz-border-radius: 10px;-webkit-box-shadow: 10px;border-radius: 10px;}
 .qcf-style #shadow {border: 1px solid #415063;padding: 10px;margin: 0 10px 20px 0;-webkit-box-shadow: 5px 5px 5px #415063;-moz-box-shadow: 5px 5px 5px #415063;box-shadow: 5px 5px 5px #415063;}
 .qcf-style #roundshadow {border: 1px solid #415063;padding: 10px; margin: 0 10px 20px 0;-webkit-box-shadow: 5px 5px 5px #415063;-moz-box-shadow: 5px 5px 5px #415063;box-shadow: 5px 5px 5px #415063;-moz-border-radius: 10px;-webkit-box-shadow: 10px;border-radius: 10px;}
-.qcf-style input[type=text], .qcf-style textarea, .qcf-style select, .qcf-style #submit {margin: 2px 0 3px 0;padding: 6px;height:auto;color: #465069;font-size: 100%;border:1px solid #415063;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
+.qcf-style input[type=text], .qcf-style input[type=email], .qcf-style textarea, .qcf-style select, .qcf-style #submit {margin: 2px 0 3px 0;padding: 6px;height:auto;color: #465069;font-size: 100%;border:1px solid #415063;width: 100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;}
 .qcf-style input:focus, .qcf-style textarea:focus {}
 .qcf-style p {margin: 4px 0;}
 .qcf-style img {width:100%;height:auto;overflow:hidden;}
 .qcf-style p span {color: #D31900;clear:both;}
-.qcf-style input[type=text].required, .qcf-style textarea.required {border: 1px solid #00C618;}
-.qcf-style input[type=text].error, .qcf-style textarea.error {border: 1px solid #D31900;}
+.qcf-style input[type=text].required, .qcf-style input[type=email].required, .qcf-style textarea.required {border: 1px solid #00C618;}
+.qcf-style input[type=text].error, .qcf-style input[type=email].error, .qcf-style textarea.error {border: 1px solid #D31900;}
 .qcf-style #submit, .qcf-style #submit:hover{text-align: center;cursor: pointer;}
 
 #ui-datepicker-div {display:none;}
@@ -82,6 +82,10 @@ input[type="range"]:focus + .rangeslider .rangeslider__handle {
   -webkit-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
   -moz-box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
   box-shadow: 0 0 8px rgba(255, 0, 255, 0.9);
+}
+
+.qcf-range-slider-control {
+  display:none
 }
 .qcf-slideroutput{
 margin-top: 20px;
