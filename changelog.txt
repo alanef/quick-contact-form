@@ -1,3 +1,6 @@
+= 8.0.6.1 =
+* Fix css class for front end datepicker
+
 = 8.0.6 =
 * Proper Fix path to jquery ui css
 

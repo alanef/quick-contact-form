@@ -240,13 +240,13 @@ function qcf_display_form( $values, $errors, $id )
                     break;
                 case 'field10':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname10', $content );
-                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-10" placeholder="' . $values['qcfname10'] . '" class="qcf-form-fieldqcfdate ' . $required . '" name="qcfname10"  value=""  />';
+                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-10" placeholder="' . $values['qcfname10'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname10"  value=""  />';
                     break;
                 case 'field11':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname11', $content );
                     
                     if ( $qcf['fieldtype'] == 'tdate' ) {
-                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-11" placeholder="' . $values['qcfname11'] . '" class="qcf-form-fieldqcfdate ' . $required . '" name="qcfname11"  value=""  /></p>';
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-11" placeholder="' . $values['qcfname11'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname11"  value=""  /></p>';
                     } else {
                         $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-11" placeholder="' . $values['qcfname11'] . '" class="qcf-form-field' . $required . '" label="Multibox 1" name="qcfname11" value="" ><br>' . "\r\t";
                     }
@@ -256,7 +256,7 @@ function qcf_display_form( $values, $errors, $id )
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname13', $content );
                     
                     if ( $qcf['fieldtypeb'] == 'bdate' ) {
-                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-13" placeholder="' . $values['qcfname13'] . '" class="qcf-form-fieldqcfdate ' . $required . '" name="qcfname13"  value="" >';
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-13" placeholder="' . $values['qcfname13'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname13"  value="" >';
                     } else {
                         $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-13" placeholder="' . $values['qcfname13'] . '" class="qcf-form-field' . $required . '" name="qcfname13" value="" >' . "\r\t";
                     }

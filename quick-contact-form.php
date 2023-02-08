@@ -23,7 +23,7 @@
  * Plugin Name: Quick Contact Form
  * Plugin URI: https://fullworks.net/products/quick-contact-form
  * Description: A really, really simple GDRP compliant contact form. There is nothing to configure, just add your email address and it's ready to go. But you then have access to a huge range of easy to use features.
- * Version: 8.0.6
+ * Version: 8.0.6.1
  * Author: Fullworks
  * Author URI: https://fullworks.net/
  * Requires PHP: 5.6
@@ -73,7 +73,7 @@ if ( ! function_exists( 'Quick_Contact_Form\run_Quick_Contact_Form' ) ) {
 		$freemius->add_action( 'after_uninstall', array( '\Quick_Contact_Form\Control\Uninstall', 'uninstall' ) );
 
 		$plugin = new Plugin( 'quick-contact-form',
-			'8.0.6',
+			'8.0.6.1',
 			$freemius );
 		$plugin->run();
 	}
