@@ -245,7 +245,7 @@ msgstr ""
 msgid "Sending message..."
 msgstr ""
 
-#: src/legacy/options.php:249, src/legacy/quick-contact-form.php:993
+#: src/legacy/options.php:249, src/legacy/quick-contact-form.php:991
 msgid "Redirecting..."
 msgstr ""
 
@@ -269,15 +269,15 @@ msgstr ""
 msgid "Please respond to confirm your email address"
 msgstr ""
 
-#: src/legacy/quick-contact-form.php:857
+#: src/legacy/quick-contact-form.php:855
 msgid "Attachments:"
 msgstr ""
 
-#: src/legacy/quick-contact-form.php:1150
+#: src/legacy/quick-contact-form.php:1151
 msgid "Quick Contact Form"
 msgstr ""
 
-#: src/legacy/quick-contact-form.php:1151
+#: src/legacy/quick-contact-form.php:1152
 msgid "Add the Quick Contact Form to your sidebar"
 msgstr ""
 

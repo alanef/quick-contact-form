@@ -1227,6 +1227,18 @@ function qcf_santitize_formvalues( $form )
         'sanitize' => 'sanitize_text_field',
         'default'  => '',
     ),
+        'thesum'    => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'answer'    => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'form_id'   => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
     );
     $sanitized_form = array();
     foreach ( $form_data as $key => $value ) {
