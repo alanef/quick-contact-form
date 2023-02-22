@@ -172,7 +172,6 @@ function qcf_get_stored_style( $id )
         'handle-colours'          => '#FFF',
         'output-size'             => '1em',
         'output-colour'           => '#465069',
-        'use_custom'              => '',
         'line_margin'             => 'margin: 2px 0 3px 0;padding: 6px;',
         'styles'                  => ".qcf-style {\r\n\r\n}",
     );
@@ -187,24 +186,29 @@ function qcf_get_stored_reply( $id )
         $reply = array();
     }
     $default = array(
-        'replytitle'       => esc_html__( 'Message sent!', 'quick-contact-form' ),
-        'replyblurb'       => esc_html__( 'Thank you for your enquiry, I&#146;ll be in contact soon', 'quick-contact-form' ),
-        'sendcopy'         => '',
-        'replycopy'        => '',
-        'replysubject'     => esc_html__( 'Thank you for your enquiry', 'quick-contact-form' ),
-        'replymessage'     => esc_html__( 'I&#146;ll be in contact soon. If you have any questions please reply to this email.', 'quick-contact-form' ),
-        'messages'         => 'checked',
-        'tracker'          => 'checked',
-        'page'             => 'checked',
-        'url'              => '',
-        'subject'          => esc_html__( 'Enquiry from', 'quick-contact-form' ),
-        'subjectoption'    => 'sendername',
-        'qcf_redirect'     => '',
-        'qcf_redirect_url' => '',
-        'copy_message'     => esc_html__( 'Thank you for your enquiry. This is a copy of your message', 'quick-contact-form' ),
-        'qcf_reload'       => '',
-        'qcf_reload_time'  => '5',
-        'bodyhead'         => esc_html__( 'The message is:', 'quick-contact-form' ),
+        'replytitle'           => esc_html__( 'Message sent!', 'quick-contact-form' ),
+        'replyblurb'           => esc_html__( 'Thank you for your enquiry, I&#146;ll be in contact soon', 'quick-contact-form' ),
+        'sendcopy'             => '',
+        'replycopy'            => '',
+        'replysubject'         => esc_html__( 'Thank you for your enquiry', 'quick-contact-form' ),
+        'replymessage'         => esc_html__( 'I&#146;ll be in contact soon. If you have any questions please reply to this email.', 'quick-contact-form' ),
+        'messages'             => 'checked',
+        'tracker'              => 'checked',
+        'page'                 => 'checked',
+        'url'                  => '',
+        'subject'              => esc_html__( 'Enquiry from', 'quick-contact-form' ),
+        'subjectoption'        => 'sendername',
+        'qcf_redirect'         => '',
+        'qcf_redirect_url'     => '',
+        'copy_message'         => esc_html__( 'Thank you for your enquiry. This is a copy of your message', 'quick-contact-form' ),
+        'qcf_reload'           => '',
+        'qcf_reload_time'      => '5',
+        'bodyhead'             => esc_html__( 'The message is:', 'quick-contact-form' ),
+        'qcf_bcc'              => '',
+        'from_reply'           => '',
+        'fromemail'            => '',
+        'createuser'           => '',
+        'activecampaign_title' => '',
     );
     $reply = array_merge( $default, $reply );
     return $reply;
@@ -259,7 +263,6 @@ function qcf_get_stored_setup()
         'alternative' => '',
         'noui'        => '',
         'nostyling'   => '',
-        'location'    => 'php',
         'nostore'     => '',
     );
     $qcf_setup = array_merge( $default, $qcf_setup );
@@ -357,20 +360,64 @@ function qcf_get_stored_emailmessage()
 function qcf_get_stored_emails( $id )
 {
     $qcf_list = get_option( 'qcf_emails' . $id );
+    $qcf = qcf_get_stored_options( $id );
+    // turn dropdown string to array
+    
+    if ( $qcf ) {
+        $dropdown = explode( ',', $qcf['dropdownlist'] );
+        $dropdown = array_map( function ( $key ) {
+            $key = trim( $key );
+            $key = str_replace( ' ', '_', $key );
+            return $key;
+        }, $dropdown );
+        $dropdown = array_flip( $dropdown );
+        $dropdown = array_map( function ( $key ) {
+            return '';
+        }, $dropdown );
+    } else {
+        $dropdown = array();
+    }
+    
     if ( !is_array( $qcf_list ) ) {
         $qcf_list = array();
     }
+    $default = array(
+        'emailenable'    => '',
+        'redirectenable' => '',
+    );
+    $qcf_list = array_merge( $default, $qcf_list );
+    $qcf_list = array_merge( $dropdown, $qcf_list );
     return $qcf_list;
 }
 
 function qcf_get_stored_redirect( $id )
 {
-    $qcf_redirect = get_option( 'qcf_redirect' . $id );
+    $default = array(
+        'whichlist' => 'dropdownlist',
+    );
+    $qcf_redirect = get_option( 'qcf_redirect' . $id, $default );
+    $qcf = qcf_get_stored_options( $id );
+    // turn dropdown string to array
+    
+    if ( $qcf ) {
+        $dropdown = explode( ',', $qcf[$qcf_redirect['whichlist']] );
+        $dropdown = array_map( function ( $key ) {
+            $key = trim( $key );
+            $key = str_replace( ' ', '_', $key );
+            return $key;
+        }, $dropdown );
+        $dropdown = array_flip( $dropdown );
+        $dropdown = array_map( function ( $key ) {
+            return '';
+        }, $dropdown );
+    } else {
+        $dropdown = array();
+    }
     
     if ( !is_array( $qcf_redirect ) ) {
         $qcf_redirect = array();
-        $qcf_redirect['whichlist'] = 'dropdownlist';
     }
-    
+    $qcf_redirect = array_merge( $default, $qcf_redirect );
+    $qcf_redirect = array_merge( $dropdown, $qcf_redirect );
     return $qcf_redirect;
 }

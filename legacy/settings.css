@@ -3,7 +3,7 @@
 .qcf-options {float:left;border: 1px solid #005F6B;padding: 0 10px 10px 10px;margin: 10px 0 0 0;background:#FFF;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;width:46%;}
 .qcf-options table input[type=text], .qcf-options textarea, .qcf-options table select {margin: 2px 0 2px 0;padding: 2px;color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto;line-height:normal;}
 .qcf-options input[type=text] {color: #465069;font-size: 100%;border:1px solid #415063;width:100%;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;box-sizing: border-box;height:auto;line-height:normal;}
-.wp-picker-container input.wp-color-picker[type="text"] {width:5em;line-height:18px;margin:0 3px 0 0;padding:3px;0;}
+.wp-picker-container input.wp-color-picker[type="text"] {width:5em;line-height:18px;margin:0 3px 0 0;padding:3px;}
 .qcf-options table {width:100%;}
 .qcf-options th {text-align:left;}
 .qcf-options td {vertical-align:top;}

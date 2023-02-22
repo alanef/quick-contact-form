@@ -18,7 +18,7 @@ add_filter(
     10,
     2
 );
-add_action( 'wp_enqueue_scripts', 'qcf_admin_scripts', 99 );
+add_action( 'wp_enqueue_scripts', 'qcf_style_scripts', 99 );
 add_action( 'widgets_init', 'add_qcf_widget' );
 function add_qcf_widget()
 {
@@ -43,24 +43,6 @@ function qcf_block_init()
 }
 
 add_action( 'init', 'qcf_block_init' );
-function qcf_create_css_file( $update )
-{
-    
-    if ( function_exists( 'file_put_contents' ) ) {
-        $css_dir = plugin_dir_path( __FILE__ ) . '/quick-contact-form-custom.css';
-        $filename = plugin_dir_path( __FILE__ );
-        
-        if ( is_writable( $filename ) && !file_exists( $css_dir ) || !empty($update) ) {
-            $data = qcf_generate_css();
-            file_put_contents( $css_dir, $data, LOCK_EX );
-        }
-    
-    } else {
-        add_action( 'wp_head', 'qcf_head_css' );
-    }
-
-}
-
 function qcf_display_form( $values, $errors, $id )
 {
     /**
@@ -100,7 +82,7 @@ function qcf_display_form( $values, $errors, $id )
     }
     $content .= '<div class="qcf-main qcf-style ' . $formstyle . '"><div id="' . $style['border'] . '">';
     $content .= '<div class="qcf-state qcf-ajax-loading qcf-style ' . $formstyle . '">' . apply_filters( 'qcf_validating_h2_markup', '<' . $hd . ' class="validating">' ) . $error['validating'] . apply_filters( 'qcf_validating_end_h2_markup', '</' . $hd . '>' ) . '</div>';
-    $content .= '<div class="qcf-state qcf-ajax-error qcf-style ' . $formstyle . '"><div align="center">Ouch! There was a server error.<br /><a href="javascript:void(0);" onclick="retryValidation(this)">Retry &raquo;</a></div></div>';
+    $content .= '<div class="qcf-state qcf-ajax-error qcf-style ' . $formstyle . '"><div align="center">Ouch! There was a server error.<br /><a class="qcf-retry">Retry &raquo;</a></div></div>';
     $content .= '<div class="qcf-state qcf-sending qcf-style ' . $formstyle . '">' . apply_filters( 'qcf_sending_h2_markup', '<' . $hd . ' class="sending">' ) . $error['sending'] . apply_filters( 'qcf_sending_end_h2_markup', '</' . $hd . '>' ) . '</div>';
     $content .= "<div class='qcf-state qcf-form-wrapper'>\r\t";
     //  $content .= "<div id='" . $style['border'] . "'>\r\t";
@@ -111,8 +93,8 @@ function qcf_display_form( $values, $errors, $id )
         $content .= $qcf['title'] . "\r\t" . $qcf['blurb'] . "\r\t";
     }
     
-    $content .= "<script type='text/javascript'>ajaxurl = '" . admin_url( 'admin-ajax.php' ) . "';</script>";
-    $content .= "<form class='qcf-form' action=\"\" method=\"POST\" enctype=\"multipart/form-data\">\r\t";
+    $name = ( empty($id) ? 'default' : esc_attr( $id ) );
+    $content .= "<form class='qcf-form' action=\"\" method=\"POST\" enctype=\"multipart/form-data\" id=\"" . wp_unique_id( 'qfc-form-' . esc_attr( $name ) . '-' ) . "\">\r\t";
     $content .= "<input type='hidden' name='id' value='{$id}' />\r\t";
     foreach ( explode( ',', $qcf['sort'] ) as $name ) {
         $required = ( $qcf['required'][$name] ? 'required' : '' );
@@ -120,19 +102,19 @@ function qcf_display_form( $values, $errors, $id )
             switch ( $name ) {
                 case 'field1':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname1', $content );
-                    $content .= '<input type="text" class="' . $required . '" name="qcfname1" value="' . $values['qcfname1'] . '" onfocus="qcfclear(this, \'' . $values['qcfname1'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname1'] . '\')">' . "\r\t";
+                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-1" placeholder="' . $values['qcfname1'] . '" class="qcf-form-field' . $required . '" name="qcfname1" value="" >' . "\r\t";
                     break;
                 case 'field2':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname2', $content );
-                    $content .= '<input type="text" class="' . $required . '" name="qcfname2"  value="' . $values['qcfname2'] . '" onfocus="qcfclear(this, \'' . $values['qcfname2'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname2'] . '\')">' . "\r\t";
+                    $content .= '<input type="email" id="qcf-form-field-id-' . $id . '-2" placeholder="' . $values['qcfname2'] . '" class="qcf-form-field' . $required . '" name="qcfname2"  value="" >' . "\r\t";
                     break;
                 case 'field3':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname3', $content );
-                    $content .= '<input type="text" class="' . $required . '" name="qcfname3"  value="' . $values['qcfname3'] . '" onfocus="qcfclear(this, \'' . $values['qcfname3'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname3'] . '\')">' . "\r\t";
+                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-3" placeholder="' . $values['qcfname3'] . '" class="qcf-form-field' . $required . '" name="qcfname3"  value="" >' . "\r\t";
                     break;
                 case 'field4':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname4', $content );
-                    $content .= '<textarea class="' . $required . '"  rows="' . $qcf['lines'] . '" name="qcfname4" onfocus="qcfclear(this, \'' . $values['qcfname4'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname4'] . '\')">' . stripslashes( $values['qcfname4'] ) . '</textarea>' . "\r\t";
+                    $content .= '<textarea id="qcf-form-field-id-' . $id . '-4" placeholder="' . $values['qcfname4'] . '" class="qcf-form-field' . $required . '"  rows="' . $qcf['lines'] . '" name="qcfname4"></textarea>' . "\r\t";
                     break;
                 case 'field5':
                     if ( isset( $errors['qcfname5'] ) && $errors['qcfname5'] ) {
@@ -250,25 +232,23 @@ function qcf_display_form( $values, $errors, $id )
                     break;
                 case 'field8':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname8', $content );
-                    $content .= '<input type="text" class="' . $required . '" name="qcfname8"  value="' . $values['qcfname8'] . '" onfocus="qcfclear(this, \'' . $values['qcfname8'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname8'] . '\')">' . "\r\t";
+                    $content .= '<input type="text"  id="qcf-form-field-id-' . $id . '-8" placeholder="' . $values['qcfname8'] . '" class="qcf-form-field' . $required . '" name="qcfname8"  value=""  >' . "\r\t";
                     break;
                 case 'field9':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname9', $content );
-                    $content .= '<input type="text" class="' . $required . '" name="qcfname9"  value="' . $values['qcfname9'] . '" onfocus="qcfclear(this, \'' . $values['qcfname9'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname9'] . '\')">' . "\r\t";
+                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-9" placeholder="' . $values['qcfname9'] . '" class="qcf-form-field' . $required . '" name="qcfname9"  value="" >' . "\r\t";
                     break;
                 case 'field10':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname10', $content );
-                    $content .= '<input type="text" class="qcfdate ' . $required . '" name="qcfname10"  value="' . $values['qcfname10'] . '" onfocus="qcfclear(this, \'' . $values['qcfname10'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname10'] . '\')" />
-                <script type="text/javascript">jQuery(document).ready(function() {jQuery(\'\\.qcfdate\').datepicker({dateFormat : \'dd M yy\'});});</script>' . "\r\t";
+                    $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-10" placeholder="' . $values['qcfname10'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname10"  value=""  />';
                     break;
                 case 'field11':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname11', $content );
                     
                     if ( $qcf['fieldtype'] == 'tdate' ) {
-                        $content .= '<input type="text" class="qcfdate ' . $required . '" name="qcfname11"  value="' . $values['qcfname11'] . '" onfocus="qcfclear(this, \'' . $values['qcfname11'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname11'] . '\')" /></p>
-				<script type="text/javascript">jQuery(document).ready(function() {jQuery(\'\\.qcfdate\').datepicker({dateFormat : \'dd M yy\'});});</script>' . "\r\t";
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-11" placeholder="' . $values['qcfname11'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname11"  value=""  /></p>';
                     } else {
-                        $content .= '<input type="text" class="' . $required . '" label="Multibox 1" name="qcfname11" value="' . $values['qcfname11'] . '" onfocus="qcfclear(this, \'' . $values['qcfname11'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname11'] . '\')"><br>' . "\r\t";
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-11" placeholder="' . $values['qcfname11'] . '" class="qcf-form-field' . $required . '" label="Multibox 1" name="qcfname11" value="" ><br>' . "\r\t";
                     }
                     
                     break;
@@ -276,10 +256,9 @@ function qcf_display_form( $values, $errors, $id )
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname13', $content );
                     
                     if ( $qcf['fieldtypeb'] == 'bdate' ) {
-                        $content .= '<input type="text" class="qcfdate ' . $required . '" name="qcfname13"  value="' . $values['qcfname13'] . '" onfocus="qcfclear(this, \'' . $values['qcfname13'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname13'] . '\')">
-                <script type="text/javascript">jQuery(document).ready(function() {jQuery(\'\\.qcfdate\').datepicker({dateFormat : \'dd M yy\'});});</script>' . "\r\t";
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-13" placeholder="' . $values['qcfname13'] . '" class="qcf-form-field qcfdate ' . $required . '" name="qcfname13"  value="" >';
                     } else {
-                        $content .= '<input type="text" class="' . $required . '" name="qcfname13" value="' . $values['qcfname13'] . '" onfocus="qcfclear(this, \'' . $values['qcfname13'] . '\')" onblur="qcfrecall(this, \'' . $values['qcfname13'] . '\')">' . "\r\t";
+                        $content .= '<input type="text" id="qcf-form-field-id-' . $id . '-13" placeholder="' . $values['qcfname13'] . '" class="qcf-form-field' . $required . '" name="qcfname13" value="" >' . "\r\t";
                     }
                     
                     break;
@@ -300,7 +279,7 @@ function qcf_display_form( $values, $errors, $id )
                     break;
                 case 'field14':
                     $content .= '<p>' . $qcf['label']['field14'] . '</p>
-                <input type="range" name="qcfname14" min="' . $qcf['min'] . '" max="' . $qcf['max'] . '" value="' . $qcf['initial'] . '" step="' . $qcf['step'] . '" data-rangeslider>
+                <input type="range" class="qcf-range-slider-control" name="qcfname14" min="' . $qcf['min'] . '" max="' . $qcf['max'] . '" value="' . $qcf['initial'] . '" step="' . $qcf['step'] . '" data-rangeslider>
                 <div class="qcf-slideroutput">';
                     
                     if ( $qcf['output-values'] ) {
@@ -311,22 +290,11 @@ function qcf_display_form( $values, $errors, $id )
                         $content .= '<span class="qcf-outputcenter"><output></output></span>';
                     }
                     
-                    $content .= '</div><div style="clear: both;"></div>
-                <script>
-                jQuery(document).ready(function($){
-                $(function() {
-                var $document = $(document),selector = "[data-rangeslider]",$inputRange = $(selector);
-                function valueOutput(element) {var value = element.value,output = element.parentNode.getElementsByTagName("output")[0];output.innerHTML = value;}
-                for (var i = $inputRange.length - 1; i >= 0; i--) {valueOutput($inputRange[i]);};
-                $document.on("change", selector, function(e) {valueOutput(e.target);});
-                $inputRange.rangeslider({polyfill: false,});
-                });
-                });
-                </script>';
+                    $content .= '</div><div style="clear: both;"></div>';
                     break;
                 case 'field15':
                     list( $required, $content ) = qcf_form_field_error( $errors, 'qcfname15', $content );
-                    $content .= '<input type="checkbox" name="qcfname15"  value="checked" ' . $values['qcfname15'] . ' />&nbsp;' . $qcf['label']['field15'] . "\r\t";
+                    $content .= '<input type="checkbox" name="qcfname15"  value="checked"  />&nbsp;' . $qcf['label']['field15'] . "\r\t";
                     break;
             }
         }
@@ -351,7 +319,8 @@ function qcf_display_form( $values, $errors, $id )
             'error_type'     => $attach['qcf_attach_error_type'],
             'error_required' => $attach['qcf_attach_error_required'],
         );
-        $content .= '<script type="text/javascript"> qfc_file_info = ' . json_encode( $qfc_file_info ) . ';</script>';
+        $script = 'qfc_file_info = ' . json_encode( $qfc_file_info ) . ';';
+        wp_add_inline_script( 'qcf_script', $script, 'before' );
         
         if ( $errors['attach'] ) {
             $content .= $errors['attach'];
@@ -362,9 +331,9 @@ function qcf_display_form( $values, $errors, $id )
         $size = $attach['qcf_attach_width'];
         $content .= '<div name="attach">';
         for ( $i = 1 ;  $i < $attach['qcf_number'] ;  $i++ ) {
-            $content .= '<input type="file" size="' . $size . '" name="filename' . $i . '"/><br>';
+            $content .= '<input type="file" size="' . $size . '" name="filename' . $i . '" class="qcf_filename_input qcf_filename' . $i . '"/><br>';
         }
-        $content .= '<input type="file" size="' . $size . '" name="filename' . $attach['qcf_number'] . '"/></p>';
+        $content .= '<input type="file" size="' . $size . '" name="filename' . $attach['qcf_number'] . '" class="qcf_filename_input qcf_filename' . $i . '"/></p>';
         $content .= '</div></div>';
     }
     
@@ -376,12 +345,13 @@ function qcf_display_form( $values, $errors, $id )
         $content .= '<p><input type="submit" value="' . $caption . '" id="submit" name="qcfsubmit' . $id . '" /></p>';
     }
     
+    $content .= '<input type="hidden" name="form_id" value="' . uniqid() . wp_unique_id() . '" />';
     $content .= '</form></div>' . "\r\t" . '<div style="clear:both;"></div></div>' . "\r\t" . '</div>' . "\r\t";
     // close
     if ( count( $errors ) > 0 ) {
-        $content .= "<script type='text/javascript' language='javascript'>\n\tdocument.querySelector('#qcf_reload').scrollIntoView();\n    </script>\r\t";
+        wp_add_inline_script( 'qcf_script', 'document.getElementById("qcf_reload").scrollIntoView();' );
     }
-    echo  $content ;
+    echo  qcf_kses_forms( $content ) ;
 }
 
 /**
@@ -685,6 +655,9 @@ function qcf_verify_form( &$values, &$errors, $id )
         }
     }
     for ( $i = 1 ;  $i <= $attach['qcf_number'] ;  $i++ ) {
+        if ( !isset( $_FILES['filename' . $i]['name'] ) || empty($_FILES['filename' . $i]['name']) ) {
+            continue;
+        }
         $tmp_name = $_FILES['filename' . $i]['tmp_name'];
         $name = $_FILES['filename' . $i]['name'];
         $size = $_FILES['filename' . $i]['size'];
@@ -701,10 +674,10 @@ function qcf_verify_form( &$values, &$errors, $id )
         }
     
     }
-    if ( $errors['attach'] && $attach['qcf_number'] > 1 ) {
+    if ( isset( $errors['attach'] ) && $errors['attach'] && $attach['qcf_number'] > 1 ) {
         $errors['attach'] = '<p class="qcf-input-error"><span>' . $attach['qcf_attach_error'] . '</span></p>';
     }
-    if ( $attach['qcf_required'] && !$found ) {
+    if ( isset( $attach['qcf_required'] ) && $attach['qcf_required'] && !$found ) {
         $errors['attach'] = '<p class="qcf-input-error"><span>' . $attach['qcf_attach_error_required'] . '</span></p>';
     }
     return count( $errors ) == 0;
@@ -743,10 +716,10 @@ function qcf_process_form( $values, $id )
         $addon = $values['qcfname1'];
     }
     if ( $reply['subjectoption'] == "sendersubj" ) {
-        $addon = $values['qcfname9'];
+        $addon = $values['c'];
     }
     if ( $reply['subjectoption'] == "senderpage" ) {
-        $addon = $pagetitle;
+        //	$addon = $pagetitle;
     }
     if ( $reply['subjectoption'] == "sendernone" ) {
         $addon = '';
@@ -999,10 +972,7 @@ function qcf_process_form( $values, $id )
     );
     
     if ( !$qcf_setup['nostore'] || $values['qcfname15'] ) {
-        $qcf_messages = get_option( 'qcf_messages' . $id );
-        if ( !is_array( $qcf_messages ) ) {
-            $qcf_messages = array();
-        }
+        $qcf_messages = get_option( 'qcf_messages' . $id, array() );
         if ( $values['qcfname1'] == $qcf['label']['field1'] ) {
             $values['qcfname1'] = '';
         }
@@ -1066,7 +1036,7 @@ function qcf_process_form( $values, $id )
         $url = ';url=' . $location;
     }
     
-    $scrollintoview = "<script type='text/javascript' language='javascript'>\n        document.querySelector('#qcf_reload').scrollIntoView();\n        </script>";
+    wp_add_inline_script( 'qcf_script', 'document.getElementById("qcf_reload").scrollIntoView();' );
     
     if ( $id ) {
         $formstyle = $id;
@@ -1080,20 +1050,18 @@ function qcf_process_form( $values, $id )
         $replycontent .= $content;
     }
     $replycontent .= '</div></div>';
-    $replycontent .= $scrollintoview;
     $redirecting = "<a id='qcf_reload'></a><br><div class='qcf-style " . $formstyle . "'>\r\t\n    <div id='" . $style['border'] . "'>\r\t";
     $redirecting .= apply_filters( 'qcf_redirecting_h2_markup', '<' . $hd . ' class="redirecting">' ) . esc_html__( 'Redirecting...', 'quick-contact-form' ) . apply_filters( 'qcf_redirecting_h2_markup', '</' . $hd . '>' );
     $redirecting .= '</div></div>';
-    $redirecting .= $scrollintoview;
     
     if ( $reply['qcf_redirect'] && $reply['qcf_reload'] ) {
-        echo  '<meta http-equiv="refresh" content="' . $reloadinterval . $url . '">' . $replycontent ;
+        echo  '<meta http-equiv="refresh" content="' . esc_attr( $reloadinterval ) . esc_url( $url ) . '">' . wp_kses_post( $replycontent ) ;
     } elseif ( $reply['qcf_redirect'] && !$reply['qcf_reload'] ) {
-        echo  '<meta http-equiv="refresh" content="0' . $url . '">' . $redirecting ;
+        echo  '<meta http-equiv="refresh" content="0' . esc_attr( $url ) . '">' . wp_kses_post( $redirecting ) ;
     } elseif ( !$reply['qcf_redirect'] && $reply['qcf_reload'] ) {
-        echo  '<meta http-equiv="refresh" content="' . $reloadinterval . '">' . $replycontent ;
+        echo  '<meta http-equiv="refresh" content="' . esc_attr( $reloadinterval ) . '">' . wp_kses_post( $replycontent ) ;
     } else {
-        echo  $replycontent ;
+        echo  wp_kses_post( $replycontent ) ;
     }
 
 }
@@ -1151,8 +1119,7 @@ function qcf_create_user( $values )
 
 function qcf_validate_form_callback()
 {
-    // @TODO sanitize early
-    $formvalues = $_POST;
+    $formvalues = qcf_santitize_formvalues( $_POST );
     $formerrors = array();
     $json = (object) array(
         'success' => false,
@@ -1180,55 +1147,141 @@ function qcf_validate_form_callback()
         }
     } else {
         $json->success = true;
+        ob_start();
+        qcf_process_form( $formvalues, $id );
+        $json->display = ob_get_clean();
     }
     
     echo  wp_json_encode( $json ) ;
     wp_die();
 }
 
+function qcf_santitize_formvalues( $form )
+{
+    $form_data = array(
+        'id'        => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname1'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname2'  => array(
+        'sanitize' => 'sanitize_email',
+        'default'  => '',
+    ),
+        'qcfname3'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname4'  => array(
+        'sanitize' => 'sanitize_textarea_field',
+        'default'  => '',
+    ),
+        'qcfname5'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname6'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname7'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname8'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname9'  => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname10' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname11' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname12' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname13' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname14' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'qcfname15' => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'action'    => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'thesum'    => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'answer'    => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+        'form_id'   => array(
+        'sanitize' => 'sanitize_text_field',
+        'default'  => '',
+    ),
+    );
+    $sanitized_form = array();
+    foreach ( $form_data as $key => $value ) {
+        
+        if ( isset( $form[$key] ) ) {
+            $sanitized_form[$key] = call_user_func( $value['sanitize'], $form[$key] );
+        } else {
+            $sanitized_form[$key] = $value['default'];
+        }
+    
+    }
+    return $sanitized_form;
+}
+
 function qcf_loop( $id )
 {
     ob_start();
+    $digit1 = mt_rand( 1, 10 );
+    $digit2 = mt_rand( 1, 10 );
     
-    if ( isset( $_POST['qcfsubmit' . $id] ) || isset( $_POST['qcfsubmit' . $id . '_x'] ) ) {
-        $formvalues = $_POST;
-        $formerrors = array();
-        
-        if ( !qcf_verify_form( $formvalues, $formerrors, $id ) ) {
-            qcf_display_form( $formvalues, $formerrors, $id );
-        } else {
-            qcf_process_form( $formvalues, $id );
-        }
-    
+    if ( $digit2 >= $digit1 ) {
+        $values['thesum'] = "{$digit1} + {$digit2}";
+        $values['answer'] = $digit1 + $digit2;
     } else {
-        $digit1 = mt_rand( 1, 10 );
-        $digit2 = mt_rand( 1, 10 );
-        
-        if ( $digit2 >= $digit1 ) {
-            $values['thesum'] = "{$digit1} + {$digit2}";
-            $values['answer'] = $digit1 + $digit2;
-        } else {
-            $values['thesum'] = "{$digit1} - {$digit2}";
-            $values['answer'] = $digit1 - $digit2;
-        }
-        
-        $qcf = qcf_get_stored_options( $id );
-        for ( $i = 1 ;  $i <= 14 ;  $i++ ) {
-            if ( isset( $qcf['label']['field' . $i] ) ) {
-                $values['qcfname' . $i] = $qcf['label']['field' . $i];
-            }
-        }
-        
-        if ( is_user_logged_in() && isset( $qcf['showuser'] ) && $qcf['showuser'] ) {
-            $current_user = wp_get_current_user();
-            $values['qcfname1'] = $current_user->user_login;
-            $values['qcfname2'] = $current_user->user_email;
-        }
-        
-        $values['qcfname12'] = '';
-        qcf_display_form( $values, array(), $id );
+        $values['thesum'] = "{$digit1} - {$digit2}";
+        $values['answer'] = $digit1 - $digit2;
     }
     
+    $qcf = qcf_get_stored_options( $id );
+    for ( $i = 1 ;  $i <= 14 ;  $i++ ) {
+        if ( isset( $qcf['label']['field' . $i] ) ) {
+            $values['qcfname' . $i] = $qcf['label']['field' . $i];
+        }
+    }
+    
+    if ( is_user_logged_in() && isset( $qcf['showuser'] ) && $qcf['showuser'] ) {
+        $current_user = wp_get_current_user();
+        $values['qcfname1'] = $current_user->user_login;
+        $values['qcfname2'] = $current_user->user_email;
+    }
+    
+    $values['qcfname12'] = '';
+    qcf_display_form( $values, array(), $id );
     $output_string = ob_get_contents();
     ob_end_clean();
     return $output_string;
@@ -1259,7 +1312,7 @@ class qcf_widget extends WP_Widget
         echo  'Select Form:</ br>' ;
         ?>
         <select class="widefat" name="<?php 
-        echo  $this->get_field_name( 'formname' ) ;
+        echo  esc_attr( $this->get_field_name( 'formname' ) ) ;
         ?>">
 			<?php 
         $arr = explode( ",", $qcf_setup['alternative'] );
@@ -1281,14 +1334,14 @@ class qcf_widget extends WP_Widget
             
             ?>
                 <option value="<?php 
-            echo  $item ;
+            echo  esc_attr( $item ) ;
             ?>"
                         id="<?php 
-            echo  $this->get_field_id( 'formname' ) ;
+            echo  esc_attr( $this->get_field_id( 'formname' ) ) ;
             ?>" <?php 
-            echo  $selected ;
+            echo  esc_attr( $selected ) ;
             ?>><?php 
-            echo  $showname ;
+            echo  esc_html( $showname ) ;
             ?>
                 </option>
 				<?php 
@@ -1311,8 +1364,8 @@ class qcf_widget extends WP_Widget
     function widget( $args, $instance )
     {
         extract( $args, EXTR_SKIP );
-        $id = $instance['formname'];
-        echo  qcf_loop( $id ) ;
+        $id = preg_replace( "/[^A-Za-z]/", '', $instance['formname'] );
+        echo  qcf_kses_forms( qcf_loop( $id ) ) ;
     }
 
 }
@@ -1347,12 +1400,12 @@ function qcf_generate_css()
             $header = ".qcf-style" . $id . " " . $hd . " {" . $headercolour . $headersize . ";height:auto;}";
         }
         
-        $input = ".qcf-style" . $id . " input[type=text], .qcf-style" . $id . " textarea, .qcf-style" . $id . " select {border: " . $style['input-border'] . ";background:" . $style['inputbackground'] . ";" . $inputfont . ";line-height:normal;height:auto; " . $style['line_margin'] . "}\r\n";
+        $input = ".qcf-style" . $id . " input[type=text], .qcf-style" . $id . " input[type=email], .qcf-style" . $id . " textarea, .qcf-style" . $id . " select {border: " . $style['input-border'] . ";background:" . $style['inputbackground'] . ";" . $inputfont . ";line-height:normal;height:auto; " . $style['line_margin'] . "}\r\n";
         $input .= ".qcf-style" . $id . " .qcfcontainer input + label, .qcf-style" . $id . " .qcfcontainer textarea + label {" . $inputfont . ";}\r\n";
         $focus = ".qcf-style" . $id . " input:focus, .qcf-style" . $id . " textarea:focus {background:" . $style['inputfocus'] . ";}\r\n";
         $paragraph = ".qcf-style" . $id . " p, .qcf-style" . $id . " select{" . $font . "line-height:normal;height:auto;}\r\n";
-        $required = ".qcf-style" . $id . " input[type=text].required, .qcf-style" . $id . " select.required, .qcf-style" . $id . " textarea.required {border: " . $style['input-required'] . ";}\r\n";
-        $error = ".qcf-style" . $id . " p span, .qcf-style" . $id . " .error {color:" . $style['error-font-colour'] . ";clear:both;}\r\n\n.qcf-style" . $id . " input[type=text].error, .qcf-style" . $id . " select.error, .qcf-style" . $id . " textarea.error {border:" . $style['error-border'] . ";}\r\n";
+        $required = ".qcf-style" . $id . " input[type=text].required, .qcf-style" . $id . " input[type=email].required, .qcf-style" . $id . " select.required, .qcf-style" . $id . " textarea.required {border: " . $style['input-required'] . ";}\r\n";
+        $error = ".qcf-style" . $id . " p span, .qcf-style" . $id . " .error {color:" . $style['error-font-colour'] . ";clear:both;}\r\n\n.qcf-style" . $id . " input[type=text].error, .qcf-style" . $id . " input[type=email].error,.qcf-style" . $id . " select.error, .qcf-style" . $id . " textarea.error {border:" . $style['error-border'] . ";}\r\n";
         if ( $style['submitwidth'] == 'submitpercent' ) {
             $submitwidth = 'width:100%;';
         }
@@ -1409,7 +1462,7 @@ function qcf_generate_css()
             $corner = '0';
         }
         
-        $corners = ".qcf-style" . $id . " input[type=text], .qcf-style" . $id . " textarea, .qcf-style" . $id . " select, .qcf-style" . $id . " #submit {border-radius:" . $corner . ";}\r\n";
+        $corners = ".qcf-style" . $id . " input[type=text], .qcf-style" . $id . " input[type=email],.qcf-style" . $id . " textarea, .qcf-style" . $id . " select, .qcf-style" . $id . " #submit {border-radius:" . $corner . ";}\r\n";
         if ( $style['corners'] == 'theme' ) {
             $corners = '';
         }
@@ -1422,29 +1475,16 @@ function qcf_generate_css()
 .qcf-style' . $id . ' div.rangeslider__handle {background: ' . $style['handle-background'] . ';border: 1px solid ' . $style['handle-border'] . ';width: ' . $handle . 'em;height: ' . $handle . 'em;position: absolute;top: -0.5em;-webkit-border-radius:' . $style['handle-colours'] . '%;-moz-border-radius:' . $style['handle-corners'] . '%;-ms-border-radius:' . $style['handle-corners'] . '%;-o-border-radius:' . $style['handle-corners'] . '%;border-radius:' . $style['handle-corners'] . '%;}
 .qcf-style' . $id . ' div.qcf-slideroutput{font-size:' . $style['output-size'] . ';color:' . $style['output-colour'] . ';}';
         $code .= ".qcf-style" . $id . " {max-width:100%;overflow:hidden;width:" . $width . ";}\r\n" . $border . $corners . $header . $paragraph . $slider . $input . $focus . $required . $error . $background . $submitbutton;
-        if ( $style['use_custom'] == 'checked' ) {
-            $code .= $style['styles'] . "\r\n";
-        }
     }
     return $code;
 }
 
 function qcf_head_css()
 {
-    $qcf_form = qcf_get_stored_setup();
-    $arr = explode( ",", $qcf_form['alternative'] );
-    foreach ( $arr as $item ) {
-        $style = qcf_get_stored_style( $item );
-        // @TODO consider how not to use Google fonts
-        if ( is_admin() && $style['font'] == 'plugin' && ($style['font-family'] || $style['font-family'] != 'inherit') ) {
-            echo  '<link href="https://fonts.googleapis.com/css?family=' . $style['font-family'] . '" rel="stylesheet" type="text/css">' ;
-        }
-    }
-    $data = '<style type="text/css" media="screen">' . "\r\n" . qcf_generate_css() . "\r\n" . '</style>';
-    echo  $data ;
+    // nothing
 }
 
-function qcf_admin_scripts()
+function qcf_style_scripts()
 {
     $qcf_form = qcf_get_stored_setup();
     wp_enqueue_script( 'jquery' );
@@ -1453,10 +1493,11 @@ function qcf_admin_scripts()
     wp_enqueue_script(
         'qcf_script',
         plugins_url( 'scripts.js', __FILE__ ),
-        array( 'jquery' ),
+        array( 'jquery', 'jquery-ui-datepicker', 'jquery-effects-core' ),
         null,
         true
     );
+    wp_add_inline_script( 'qcf_script', 'var ajaxurl = "' . admin_url( 'admin-ajax.php' ) . '";' );
     wp_enqueue_script(
         'qcf_slider',
         plugins_url( 'slider.js', __FILE__ ),
@@ -1467,26 +1508,31 @@ function qcf_admin_scripts()
     
     if ( !$qcf_form['nostyling'] ) {
         wp_enqueue_style( 'qcf_style', plugins_url( 'styles.css', __FILE__ ) );
-        
-        if ( $qcf_form['location'] == 'php' ) {
-            qcf_create_css_file( null );
-            wp_enqueue_style( 'qcf_custom_style', plugins_url( 'quick-contact-form-custom.css', __FILE__ ) );
-        } else {
-            add_action( 'wp_head', 'qcf_head_css' );
-        }
-    
+        wp_add_inline_style( 'qcf_style', qcf_generate_css() );
     }
+    
     
     if ( !$qcf_form['noui'] ) {
-        wp_enqueue_style( 'jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css' );
+        $b = wp_enqueue_style( 'jquery-style', QUICK_CONTACT_FORM_PLUGIN_URL . 'ui/user/css/jquery-ui-smoothness-1-11-2.css' );
+        $c = 1;
     }
+
 }
 
 function qcf_start( $atts )
 {
-    extract( shortcode_atts( array(
-        'id' => '',
-    ), $atts ) );
+    $atts = shortcode_atts( array(
+        'id'   => '',
+        'form' => '',
+    ), $atts );
+    
+    if ( !empty($atts['id']) ) {
+        $id = $atts['id'];
+    } else {
+        $id = $atts['form'];
+    }
+    
+    $id = preg_replace( "/[^A-Za-z]/", '', $id );
     return qcf_loop( $id );
 }
 
@@ -1607,4 +1653,61 @@ function qcf_wp_mail(
         }
     
     }
+}
+
+function qcf_kses_forms( $html )
+{
+    $kses_defaults = wp_kses_allowed_html( 'post' );
+    $svg_args = array(
+        'form'     => array(
+        'class'   => true,
+        'method'  => true,
+        'action'  => true,
+        'enctype' => true,
+        'id'      => true,
+    ),
+        'select'   => array(
+        'class' => true,
+        'name'  => true,
+        'style' => true,
+    ),
+        'option'   => array(
+        'class' => true,
+        'value' => true,
+        'style' => true,
+    ),
+        'input'    => array(
+        'id'               => true,
+        'class'            => true,
+        'name'             => true,
+        'type'             => true,
+        'value'            => true,
+        'style'            => true,
+        'data-default'     => true,
+        'data-rangeslider' => true,
+        'min'              => true,
+        'max'              => true,
+        'step'             => true,
+        'placeholder'      => true,
+        'size'             => true,
+        'src'              => true,
+    ),
+        'textarea' => array(
+        'id'           => true,
+        'class'        => true,
+        'name'         => true,
+        'type'         => true,
+        'value'        => true,
+        'style'        => true,
+        'data-default' => true,
+        'placeholder'  => true,
+    ),
+        'output'   => array(
+        'id'    => true,
+        'class' => true,
+        'style' => true,
+    ),
+    );
+    $allowed_tags = array_merge( $kses_defaults, $svg_args );
+    return wp_kses( $html, $allowed_tags );
 }
