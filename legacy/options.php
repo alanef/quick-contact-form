@@ -230,7 +230,7 @@ function qcf_get_stored_error( $id )
         'field6'       => esc_html__( 'Check at least one box', 'quick-contact-form' ),
         'field7'       => esc_html__( 'There is an error', 'quick-contact-form' ),
         'field8'       => esc_html__( sprintf( 'The %1$s is missing', strtolower( $qcf['label']['field8'] ) ), 'quick-contact-form' ),
-        'field9'       => esc_html__( sprintf( 'What is your $1%s?', strtolower( $qcf['label']['field9'] ) ), 'quick-contact-form' ),
+        'field9'       => esc_html__( sprintf( 'What is your %1$s?', strtolower( $qcf['label']['field9'] ) ), 'quick-contact-form' ),
         'field10'      => esc_html__( 'Please select a date', 'quick-contact-form' ),
         'field11'      => esc_html__( 'Enter a value', 'quick-contact-form' ),
         'field13'      => esc_html__( 'Enter a value', 'quick-contact-form' ),

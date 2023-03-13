@@ -1,8 +1,8 @@
 === Quick Contact Form ===
 Contributors: Fullworks
 Tags: contact form, form
-Tested up to: 6.1
-Stable tag: 8.0.6.2
+Tested up to: 6.2
+Stable tag: 8.0.6.4
 Type: freemium
 
 An easy to set up, plug and play contact form with a huge range of options and styles. A beginner friendly WordPress contact form plugin.
@@ -96,24 +96,19 @@ I did, and so have you.  Maybe there will be more, who knows.
 
 
 == Changelog ==
+= 8.0.6.4 =
+* Fix URL on email
+* Fix datepicker ui css
+* Fix symbol in error settings
+
+= 8.0.6.3 =
+* Fix redirection sanitization
+
 = 8.0.6.2 =
 * Fix maths captcha
 
 = 8.0.6.1 =
 * Fix css class for front end datepicker
 
-= 8.0.6 =
-* Proper Fix path to jquery ui css
-
-= 8.0.5 =
-* Fix path to jquery ui css
-
-= 8.0.4 =
-* Added some extra nonces and sanitizations
-
-= 8.0.3 =
-* add filters so default markup can be overridden
-* made checking and sending header follow the style option
-* enabled  the consent field to be a required field
 
 [Full Change History](https://plugins.trac.wordpress.org/browser/quick-contact-form/trunk/changelog.txt)

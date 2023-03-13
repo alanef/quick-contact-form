@@ -732,11 +732,16 @@ function qcf_process_form( $values, $id )
     }
     
     $ip = $_SERVER['REMOTE_ADDR'];
-    $url = $_SERVER["HTTP_HOST"] . $_SERVER["REQUEST_URI"];
-    $page = get_the_title();
-    if ( empty($page) ) {
+    $url = ( isset( $_POST['url'] ) ? sanitize_text_field( $_POST['url'] ) : '' );
+    // look up post id using permalink
+    $post_id = url_to_postid( $url );
+    
+    if ( $post_id ) {
+        $page = get_the_title( $post_id );
+    } else {
         $page = 'quick contact form';
     }
+    
     foreach ( explode( ',', $qcf['sort'] ) as $item ) {
         if ( $qcf['active_buttons'][$item] ) {
             switch ( $item ) {
@@ -1057,7 +1062,7 @@ function qcf_process_form( $values, $id )
     if ( $reply['qcf_redirect'] && $reply['qcf_reload'] ) {
         echo  '<meta http-equiv="refresh" content="' . esc_attr( $reloadinterval ) . esc_url( $url ) . '">' . wp_kses_post( $replycontent ) ;
     } elseif ( $reply['qcf_redirect'] && !$reply['qcf_reload'] ) {
-        echo  '<meta http-equiv="refresh" content="0' . esc_url( $url ) . '">' . wp_kses_post( $redirecting ) ;
+        echo  '<meta http-equiv="refresh" content="0' . esc_attr( $url ) . '">' . wp_kses_post( $redirecting ) ;
     } elseif ( !$reply['qcf_redirect'] && $reply['qcf_reload'] ) {
         echo  '<meta http-equiv="refresh" content="' . esc_attr( $reloadinterval ) . '">' . wp_kses_post( $replycontent ) ;
     } else {
@@ -1511,12 +1516,9 @@ function qcf_style_scripts()
         wp_add_inline_style( 'qcf_style', qcf_generate_css() );
     }
     
-    
     if ( !$qcf_form['noui'] ) {
-        $b = wp_enqueue_style( 'jquery-style', QUICK_CONTACT_FORM_PLUGIN_URL . 'ui/user/css/jquery-ui-smoothness-1-11-2.css' );
-        $c = 1;
+        wp_enqueue_style( 'jquery-style', QUICK_CONTACT_FORM_PLUGIN_URL . 'ui/user/css/jquery/jquery-ui.min.css' );
     }
-
 }
 
 function qcf_start( $atts )
