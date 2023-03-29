@@ -1,8 +1,13 @@
-= 8.0.6.3 =
-* Fix redirection sanitization
+= 8.0.6.6 =
+* Freemius library update
 
-= 8.0.6.2 =
-* Fix maths captcha
+= 8.0.6.5 =
+* Freemius library update
+
+= 8.0.6.4 =
+* Fix URL on email
+* Fix datepicker ui css
+* Fix symbol in error settings
 
 = 8.0.6.1 =
 * Fix css class for front end datepicker

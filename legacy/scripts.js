@@ -49,6 +49,8 @@ jQuery(document).ready(function () {
                 i++;
             });
             form_data.append('action', 'qcf_validate_form');
+            var url=window.location.href;
+            form_data.append('url', url);
 
             $.ajax({
                 url: ajaxurl,
