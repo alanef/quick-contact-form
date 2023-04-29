@@ -45,7 +45,7 @@ msgstr ""
 msgid "Go Pro: Free 14 Day Trial"
 msgstr ""
 
-#: src/legacy/messages.php:204, src/legacy/settings.php:88, src/legacy/settings.php:232, src/legacy/settings.php:1363, src/legacy/settings.php:1485, src/legacy/settings.php:1989
+#: src/legacy/messages.php:204, src/legacy/settings.php:88, src/legacy/settings.php:232, src/legacy/settings.php:1363, src/legacy/settings.php:1485, src/legacy/settings.php:1993
 msgid "Upgrade to Pro"
 msgstr ""
 
@@ -433,11 +433,11 @@ msgstr ""
 msgid "To build a mailing list"
 msgstr ""
 
-#: src/legacy/settings.php:1984
+#: src/legacy/settings.php:1988
 msgid "Help and Support"
 msgstr ""
 
-#: src/legacy/settings.php:1993
+#: src/legacy/settings.php:1997
 msgid "Pro: Free 14 Day Trial"
 msgstr ""
 

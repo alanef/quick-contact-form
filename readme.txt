@@ -2,7 +2,7 @@
 Contributors: Fullworks
 Tags: contact form, form
 Tested up to: 6.2
-Stable tag: 8.0.6.5
+Stable tag: 8.0.6.7
 Type: freemium
 
 An easy to set up, plug and play contact form with a huge range of options and styles. A beginner friendly WordPress contact form plugin.
@@ -96,6 +96,12 @@ I did, and so have you.  Maybe there will be more, who knows.
 
 
 == Changelog ==
+= 8.0.6.7 =
+* Stop users inputting stuff that will break CSV uploads into some less secure spreadsheets - Kudos to Kerim Abubakarov
+
+= 8.0.6.6 =
+* Freemius library update
+
 = 8.0.6.5 =
 * Freemius library update
 

@@ -1552,9 +1552,15 @@ function qcf_generate_csv()
         foreach ( array_reverse( $message ) as $value ) {
             $cells = array();
             foreach ( explode( ',', $qcf['sort'] ) as $name ) {
+                
                 if ( $qcf['active_buttons'][$name] == "on" && $name != 'field12' ) {
+                    // replace all = signs with - to stop execution
+                    $value[$name] = str_replace( '=', '-', $value[$name] );
+                    // remove common CSV spreadsheet separators -use an array to make it easier to add more
+                    $value[$name] = str_replace( array( ',', ';', '\\t' ), ' ', $value[$name] );
                     array_push( $cells, $value[$name] );
                 }
+            
             }
             array_push( $cells, $value['field0'] );
             fputcsv(
