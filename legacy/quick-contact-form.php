@@ -1487,6 +1487,7 @@ function qcf_generate_css()
 function qcf_head_css()
 {
     // nothing
+    return "";
 }
 
 function qcf_style_scripts()

@@ -1,3 +1,9 @@
+= 8.0.6.8 =
+* Freemius library update
+
+= 8.0.6.7 =
+* Stop users inputting stuff that will break CSV uploads into some less secure spreadsheets - Kudos to Kerim Abubakarov
+
 = 8.0.6.6 =
 * Freemius library update
 

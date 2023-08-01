@@ -40,17 +40,23 @@ function qcf_setup( $id )
             $qcf_setup['current'] = stripslashes( sanitize_text_field( $_POST['new_form'] ) );
             $qcf_setup['current'] = preg_replace( "/[^A-Za-z]/", '', $qcf_setup['current'] );
             $qcf_setup['current'] = filter_var( $qcf_setup['current'], FILTER_SANITIZE_STRING );
-            $qcf_setup['alternative'] = $qcf_setup['current'] . ',' . $qcf_setup['alternative'];
             $qcf_email[$qcf_setup['current']] = stripslashes( sanitize_text_field( $_POST['new_email'] ) );
-        }
+            
+            if ( !empty($qcf_setup['current']) ) {
+                $qcf_setup['alternative'] = $qcf_setup['current'] . ',' . $qcf_setup['alternative'];
+                $qcf_email[] = $qcf_email[$qcf_setup['current']];
+                update_option( 'qcf_email', $qcf_email );
+                update_option( 'qcf_setup', $qcf_setup );
+                qcf_admin_notice( "The new form has been added." );
+                if ( $_POST['qcf_clone'] && !empty($_POST['new_form']) ) {
+                    qcf_clone( $qcf_setup['current'], $_POST['qcf_clone'] );
+                }
+            }
         
-        $qcf_email[] = $qcf_email[$qcf_setup['current']];
-        update_option( 'qcf_email', $qcf_email );
-        update_option( 'qcf_setup', $qcf_setup );
-        qcf_admin_notice( "The new form has been added." );
-        if ( $_POST['qcf_clone'] && !empty($_POST['new_form']) ) {
-            qcf_clone( $qcf_setup['current'], $_POST['qcf_clone'] );
+        } else {
+            qcf_admin_notice( "The form name is empty.", 'error' );
         }
+    
     }
     
     $arr = explode( ",", $qcf_setup['alternative'] );
@@ -147,7 +153,7 @@ function qcf_setup( $id )
         }
         
         $content .= '<tr><td><input type="radio" name="current" value="' . esc_attr( $item ) . '" ' . esc_attr( $checked ) . ' /> ' . esc_html( $formname ) . '</td>';
-        $content .= '<td><input type="text" style="padding:1px;" label="qcf_email" name="qcf_email"' . esc_attr( $item ) . '" value="' . esc_attr( $qcf_email[$item] ) . '" /></td>';
+        $content .= '<td><input type="text" style="padding:1px;" label="qcf_email" name="qcf_email' . esc_attr( $item ) . '"  value="' . esc_attr( $qcf_email[$item] ) . '" /></td>';
         
         if ( $item ) {
             $shortcode = ' id="' . $item . '"';
@@ -1466,10 +1472,10 @@ function qcf_delete_things( $id )
     delete_option( 'qcf_attach' . $id );
 }
 
-function qcf_admin_notice( $message = '' )
+function qcf_admin_notice( $message = '', $class = "updated" )
 {
     if ( !empty($message) ) {
-        echo  '<div class="updated"><p>' . $message . '</p></div>' ;
+        echo  '<div class="' . $class . '"><p>' . $message . '</p></div>' ;
     }
 }
 
@@ -1552,9 +1558,15 @@ function qcf_generate_csv()
         foreach ( array_reverse( $message ) as $value ) {
             $cells = array();
             foreach ( explode( ',', $qcf['sort'] ) as $name ) {
+                
                 if ( $qcf['active_buttons'][$name] == "on" && $name != 'field12' ) {
+                    // replace all = signs with - to stop execution
+                    $value[$name] = str_replace( '=', '-', $value[$name] );
+                    // remove common CSV spreadsheet separators -use an array to make it easier to add more
+                    $value[$name] = str_replace( array( ',', ';', '\\t' ), ' ', $value[$name] );
                     array_push( $cells, $value[$name] );
                 }
+            
             }
             array_push( $cells, $value['field0'] );
             fputcsv(

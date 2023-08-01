@@ -25,7 +25,7 @@ msgstr ""
 msgid "Quick Contact Form Messages"
 msgstr ""
 
-#: src/legacy/messages.php:117, src/legacy/messages.php:137, src/legacy/messages.php:144, src/legacy/messages.php:168, src/legacy/messages.php:185, src/legacy/settings.php:1898
+#: src/legacy/messages.php:117, src/legacy/messages.php:137, src/legacy/messages.php:144, src/legacy/messages.php:168, src/legacy/messages.php:185, src/legacy/settings.php:1902
 msgid "Nonce validation - security failed"
 msgstr ""
 
@@ -41,23 +41,23 @@ msgstr ""
 msgid "The message options have been updated."
 msgstr ""
 
-#: src/legacy/messages.php:207, src/legacy/settings.php:91, src/legacy/settings.php:235, src/legacy/settings.php:1366
+#: src/legacy/messages.php:207, src/legacy/settings.php:95, src/legacy/settings.php:239, src/legacy/settings.php:1370
 msgid "Go Pro: Free 14 Day Trial"
 msgstr ""
 
-#: src/legacy/messages.php:204, src/legacy/settings.php:88, src/legacy/settings.php:232, src/legacy/settings.php:1363, src/legacy/settings.php:1485, src/legacy/settings.php:1989
+#: src/legacy/messages.php:204, src/legacy/settings.php:92, src/legacy/settings.php:236, src/legacy/settings.php:1367, src/legacy/settings.php:1489, src/legacy/settings.php:1997
 msgid "Upgrade to Pro"
 msgstr ""
 
-#: src/legacy/messages.php:211, src/legacy/settings.php:95
+#: src/legacy/messages.php:211, src/legacy/settings.php:99
 msgid "Upgrading lets you create a mailing list, send emails from your dashboard and access all form attachments."
 msgstr ""
 
-#: src/legacy/messages.php:212, src/legacy/settings.php:96
+#: src/legacy/messages.php:212, src/legacy/settings.php:100
 msgid "Click here to find out more"
 msgstr ""
 
-#: src/legacy/messages.php:271, src/legacy/settings.php:455
+#: src/legacy/messages.php:271, src/legacy/settings.php:459
 msgid "Consent"
 msgstr ""
 
@@ -65,11 +65,11 @@ msgstr ""
 msgid "Your Name"
 msgstr ""
 
-#: src/legacy/options.php:45, src/legacy/settings.php:384
+#: src/legacy/options.php:45, src/legacy/settings.php:388
 msgid "Email"
 msgstr ""
 
-#: src/legacy/options.php:46, src/legacy/settings.php:388
+#: src/legacy/options.php:46, src/legacy/settings.php:392
 msgid "Telephone"
 msgstr ""
 
@@ -281,163 +281,163 @@ msgstr ""
 msgid "Add the Quick Contact Form to your sidebar"
 msgstr ""
 
-#: src/legacy/settings.php:215
+#: src/legacy/settings.php:219
 msgid "Mailchimp"
 msgstr ""
 
-#: src/legacy/settings.php:215
+#: src/legacy/settings.php:219
 msgid "Add your visitors to a mailchimp list."
 msgstr ""
 
-#: src/legacy/settings.php:217, src/legacy/settings.php:222
+#: src/legacy/settings.php:221, src/legacy/settings.php:226
 msgid "QCF Pro users only."
 msgstr ""
 
-#: src/legacy/settings.php:220
+#: src/legacy/settings.php:224
 msgid "Mail Lists"
 msgstr ""
 
-#: src/legacy/settings.php:220
+#: src/legacy/settings.php:224
 msgid "Build an email list and send messages."
 msgstr ""
 
-#: src/legacy/settings.php:321
+#: src/legacy/settings.php:325
 msgid "The default form settings have been updated."
 msgstr ""
 
-#: src/legacy/settings.php:319, src/legacy/settings.php:328
+#: src/legacy/settings.php:323, src/legacy/settings.php:332
 msgid "The form settings for"
 msgstr ""
 
-#: src/legacy/settings.php:319
+#: src/legacy/settings.php:323
 msgid "have been updated."
 msgstr ""
 
-#: src/legacy/settings.php:330
+#: src/legacy/settings.php:334
 msgid "The default form settings have been reset."
 msgstr ""
 
-#: src/legacy/settings.php:328
+#: src/legacy/settings.php:332
 msgid "have been reset."
 msgstr ""
 
-#: src/legacy/settings.php:380, src/legacy/settings.php:418, src/legacy/settings.php:422
+#: src/legacy/settings.php:384, src/legacy/settings.php:422, src/legacy/settings.php:426
 msgid "Textbox"
 msgstr ""
 
-#: src/legacy/settings.php:385
+#: src/legacy/settings.php:389
 msgid "also validates format"
 msgstr ""
 
-#: src/legacy/settings.php:389
+#: src/legacy/settings.php:393
 msgid "also checks number format"
 msgstr ""
 
-#: src/legacy/settings.php:392
+#: src/legacy/settings.php:396
 msgid "Textarea"
 msgstr ""
 
-#: src/legacy/settings.php:397, src/legacy/settings.php:404, src/legacy/settings.php:411
+#: src/legacy/settings.php:401, src/legacy/settings.php:408, src/legacy/settings.php:415
 msgid "Selector"
 msgstr ""
 
-#: src/legacy/settings.php:456
+#: src/legacy/settings.php:460
 msgid "Add a checkbox to permit data storage. html links are permitted"
 msgstr ""
 
-#: src/legacy/settings.php:809
+#: src/legacy/settings.php:813
 msgid "Set the margins and padding of each bit using CSS shortcodes"
 msgstr ""
 
-#: src/legacy/settings.php:899
+#: src/legacy/settings.php:903
 msgid "Use the Additional CSS option"
 msgstr ""
 
-#: src/legacy/settings.php:1452
+#: src/legacy/settings.php:1456
 msgid "Upgrade to Pro for these great Extensions"
 msgstr ""
 
-#: src/legacy/settings.php:1453
+#: src/legacy/settings.php:1457
 msgid "Upgrading gets you the following extra features (with more to come):"
 msgstr ""
 
-#: src/legacy/settings.php:1454
+#: src/legacy/settings.php:1458
 msgid "Connect to Mailchimp, create your own mailing list and customise your redirections"
 msgstr ""
 
-#: src/legacy/settings.php:1456
+#: src/legacy/settings.php:1460
 msgid "Send messages to everyone in your mailing list (only restricted by your hosting limits)"
 msgstr ""
 
-#: src/legacy/settings.php:1458
+#: src/legacy/settings.php:1462
 msgid "You can also send email to selected people from the Message Centre"
 msgstr ""
 
-#: src/legacy/settings.php:1459
+#: src/legacy/settings.php:1463
 msgid "View and access message attachments in the message centre"
 msgstr ""
 
-#: src/legacy/settings.php:1461
+#: src/legacy/settings.php:1465
 msgid "Upgrade"
 msgstr ""
 
-#: src/legacy/settings.php:1462
+#: src/legacy/settings.php:1466
 msgid "Click the button below to pay for your upgrade"
 msgstr ""
 
-#: src/legacy/settings.php:1462
+#: src/legacy/settings.php:1466
 msgid "Once payment has cleared upgrading is automatic"
 msgstr ""
 
-#: src/legacy/settings.php:1462
+#: src/legacy/settings.php:1466
 msgid "But if something does go awry you will get an email with an authorisation key that you can enter below."
 msgstr ""
 
-#: src/legacy/settings.php:1376, src/legacy/settings.php:1394
+#: src/legacy/settings.php:1380, src/legacy/settings.php:1398
 msgid "This will only work if you are collecting names and email addresses"
 msgstr ""
 
-#: src/legacy/settings.php:1377, src/legacy/settings.php:1395
+#: src/legacy/settings.php:1381, src/legacy/settings.php:1399
 msgid "Opt-in message message:"
 msgstr ""
 
-#: src/legacy/settings.php:1378
+#: src/legacy/settings.php:1382
 msgid "Active Campaign API Key"
 msgstr ""
 
-#: src/legacy/settings.php:1379
+#: src/legacy/settings.php:1383
 msgid "Active Campaign URL"
 msgstr ""
 
-#: src/legacy/settings.php:1396
+#: src/legacy/settings.php:1400
 msgid "Your Mailchimp API Key:"
 msgstr ""
 
-#: src/legacy/settings.php:1397
+#: src/legacy/settings.php:1401
 msgid "The Mailchimp Audience ID:"
 msgstr ""
 
-#: src/legacy/settings.php:1406
+#: src/legacy/settings.php:1410
 msgid "Set up your own mailing list and send emails from your dashboard"
 msgstr ""
 
-#: src/legacy/settings.php:1407
+#: src/legacy/settings.php:1411
 msgid "Manage mailing list"
 msgstr ""
 
-#: src/legacy/settings.php:1407
+#: src/legacy/settings.php:1411
 msgid "Send an email"
 msgstr ""
 
-#: src/legacy/settings.php:1485
+#: src/legacy/settings.php:1489
 msgid "To build a mailing list"
 msgstr ""
 
-#: src/legacy/settings.php:1984
+#: src/legacy/settings.php:1992
 msgid "Help and Support"
 msgstr ""
 
-#: src/legacy/settings.php:1993
+#: src/legacy/settings.php:2001
 msgid "Pro: Free 14 Day Trial"
 msgstr ""
 
