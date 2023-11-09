@@ -1,7 +1,7 @@
 === Quick Contact Form ===
 Contributors: Fullworks
 Tags: contact form, form
-Tested up to: 6.3
+Tested up to: 6.4
 Stable tag: 8.0.6.9
 Type: freemium
 
